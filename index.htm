@@ -37,6 +37,8 @@
     /* BUTTONS */
     .btn-primary{display:inline-flex;align-items:center;gap:8px;background:var(--red);color:#fff;font-family:'Inter',sans-serif;font-size:1rem;font-weight:700;padding:14px 28px;border-radius:100px;border:none;cursor:pointer;text-decoration:none;transition:background .2s,transform .15s,box-shadow .2s;box-shadow:0 4px 24px var(--red-glow)}
     .btn-primary:hover{background:var(--red-dark);transform:translateY(-2px);box-shadow:0 8px 32px var(--red-glow)}
+    .btn-ghost{display:inline-flex;align-items:center;gap:8px;background:transparent;color:#fff;font-family:'Inter',sans-serif;font-size:1rem;font-weight:600;padding:13px 24px;border-radius:100px;border:1px solid rgba(255,255,255,.2);cursor:pointer;text-decoration:none;transition:border-color .2s,background .2s,transform .15s}
+    .btn-ghost:hover{border-color:rgba(255,255,255,.5);background:rgba(255,255,255,.05);transform:translateY(-2px)}
 
     /* MESSAGES MARQUEE */
     .messages-strip{position:relative;z-index:1;background:var(--card);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:2.5rem 0;overflow:hidden}
@@ -54,13 +56,22 @@
     .section-desc{color:var(--muted);font-size:1rem;line-height:1.6;max-width:540px;margin-bottom:2.5rem}
     .divider{position:relative;z-index:1;height:1px;background:var(--border);max-width:900px;margin:0 auto}
 
-    /* DROP ZONE / BOTÓN CÁMARA */
-    #drop-zone{border:2px dashed rgba(233,45,46,.4);border-radius:var(--radius);padding:3.5rem 2rem;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;background:rgba(233,45,46,.03);margin-bottom:1.5rem}
-    #drop-zone:hover,#drop-zone.drag-over{border-color:var(--red);background:rgba(233,45,46,.07)}
-    .drop-icon{font-size:3.5rem;margin-bottom:1rem}
-    .drop-title{font-size:1.15rem;font-weight:700;margin-bottom:.4rem}
-    .drop-sub{color:var(--muted);font-size:.85rem;margin-bottom:1.5rem}
-    #file-input{display:none}
+    /* CARDS CONTENEDORAS DE SUBIDA */
+    .upload-container{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:1.5rem;}
+    .drop-zone{border:2px dashed rgba(233,45,46,.4);border-radius:var(--radius);padding:2.5rem 1.5rem;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;background:rgba(233,45,46,.03);display:flex;flex-direction:column;align-items:center;justify-content:center;}
+    .drop-zone:hover,.drop-zone.drag-over{border-color:var(--red);background:rgba(233,45,46,.07)}
+    .drop-icon{font-size:3rem;margin-bottom:0.75rem}
+    .drop-title{font-size:1.1rem;font-weight:700;margin-bottom:.4rem;line-height:1.3}
+    .drop-sub{color:var(--muted);font-size:.8rem;line-height:1.4}
+    .file-input-hidden{display:none}
+
+    /* STATUS BAR */
+    #status-bar{display:none;align-items:center;gap:10px;background:rgba(233,45,46,.08);border:1px solid rgba(233,45,46,.2);border-radius:12px;padding:1rem 1.25rem;margin-bottom:1.5rem;font-size:.9rem}
+    #status-bar.visible{display:flex}
+    .status-dot{width:8px;height:8px;border-radius:50%;background:var(--red);animation:pulse 1s ease-in-out infinite;flex-shrink:0}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+    .status-dot.done{background:#22c55e;animation:none}
+    .status-dot.error{background:var(--red);animation:none}
 
     /* UPLOAD LIST */
     #upload-list{display:flex;flex-direction:column;gap:.75rem;margin-bottom:1.5rem}
@@ -121,6 +132,7 @@
       .qr-inner{grid-template-columns:1fr;text-align:center;gap:1.5rem}
       #qr-container{margin:0 auto}
       .gallery-grid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}
+      .upload-container{grid-template-columns:1fr;gap:15px;}
     }
   </style>
 </head>
@@ -137,7 +149,8 @@
   </h1>
   <p class="hero-sub">Gracias por participar de mi cumpleaños. Dejá una foto que sea un recuerdo imborrable.</p>
   <div class="hero-cta">
-    <a href="#upload" class="btn-primary">📸 Sacar / Subir Foto</a>
+    <a href="#upload" class="btn-primary">📸 Compartir Foto</a>
+    <a href="#gallery" class="btn-ghost">🖼 Ver galería</a>
   </div>
   <div class="scroll-hint">Deslizá</div>
 </section>
@@ -149,29 +162,48 @@
     <div class="msg-item"><span class="dot"></span>Tu aporte hace que este momento sea único ✨</div>
     <div class="msg-item"><span class="dot"></span>50 años de momentos que valen la pena recordar 🥂</div>
     <div class="msg-item"><span class="dot"></span>Cada foto es un abrazo que se queda para siempre 💛</div>
+    <div class="msg-item"><span class="dot"></span>Gracias por estar aquí, esto es gracias a vos 🎊</div>
   </div>
 </div>
 
 <section class="section" id="upload">
   <p class="section-label">📷 Compartir</p>
   <h2 class="section-title">Subí tu foto al álbum</h2>
-  <p class="section-desc">Al tocar abajo se abrirá tu cámara para capturar el momento directamente.</p>
+  <p class="section-desc">Elegí la opción que prefieras para enviarle tu recuerdo a Gustavo.</p>
 
-  <div id="drop-zone" onclick="document.getElementById('file-input').click()" ondragover="handleDrag(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
-    <div class="drop-icon">📸</div>
-    <div class="drop-title">Tocá aquí para abrir la cámara</div>
-    <div class="drop-sub">Saca una foto y se subirá automáticamente</div>
+  <div id="status-bar">
+    <span class="status-dot" id="status-dot"></span>
+    <span id="status-text">Listo para subir</span>
   </div>
-  <input type="file" id="file-input" accept="image/*" capture="environment" onchange="handleFiles(this.files)"/>
+
+  <div class="upload-container">
+    
+    <div class="drop-zone" onclick="document.getElementById('file-input-camera').click()">
+      <div class="drop-icon">📸</div>
+      <div class="drop-title">Tocá aquí para abrir la cámara</div>
+      <div class="drop-sub">Saca una foto y se subirá automáticamente</div>
+    </div>
+    <input type="file" id="file-input-camera" class="file-input-hidden" accept="image/*" capture="environment" onchange="handleFiles(this.files)"/>
+
+    <div class="drop-zone" onclick="document.getElementById('file-input-gallery').click()" ondragover="handleDrag(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
+      <div class="drop-icon">🖼️</div>
+      <div class="drop-title">Tocá aquí para subir desde tu galería</div>
+      <div class="drop-sub">Subí una foto que tengas desde tu teléfono</div>
+    </div>
+    <input type="file" id="file-input-gallery" class="file-input-hidden" accept="image/*" onchange="handleFiles(this.files)"/>
+
+  </div>
+
   <div id="upload-list"></div>
 </section>
 
 <div class="divider"></div>
 
-<section class="section" id="gallery-section">
+<section class="section" id="gallery">
   <p class="section-label">✨ Álbum Digital</p>
   <h2 class="section-title">Momentos en tiempo real</h2>
   <p class="section-desc">Fotos compartidas por los invitados durante la fiesta.</p>
+  <button class="btn-ghost" id="load-gallery-btn" onclick="loadGallery()" style="margin-bottom:1.5rem; display: inline-flex;">🔄 Actualizar fotos</button>
   <div class="gallery-grid" id="gallery-grid">
     <div class="empty-gallery"><div class="big">⏳</div>Cargando fotos del álbum...</div>
   </div>
@@ -185,7 +217,7 @@
     <div class="qr-text">
       <p class="qr-label">📲 Compartí con invitados</p>
       <h3>Escaneá el QR</h3>
-      <p>Mostrá este código en la fiesta para que todos puedan subir sus fotos desde el celular.</p>
+      <p>Mostrá este código en la fiesta para que todos puedan subir sus fotos desde el celular, sin registrarse.</p>
       <div class="qr-url">
         <span id="page-url" style="flex:1">—</span>
         <button class="copy-btn" onclick="copyURL()">Copiar</button>
@@ -207,7 +239,9 @@
 <script>
 // ── CONFIGURACIÓN DEL BACKEND SEGURO ──
 // ↓↓↓ PEGA ACÁ ABAJO LA URL QUE TE DIO GOOGLE APPS SCRIPT AL IMPLEMENTAR ↓↓↓
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbynyMnuNyUnjdGZH1-lGE5DP8NGdYIlkUKzZyJkEFpMvdXJpwL314rppe23aOKimqw6/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxHnuTnggyUCpEq82P3vmGEJgSv0WNQPOXEZy-8qxCIwrUEXI-fVZT8ran17vTYyw/exec';
+
+let galleryFiles = [];
 
 // ── QR + URL ──
 const PAGE_URL = window.location.href.split('?')[0];
@@ -222,9 +256,9 @@ function copyURL() {
 }
 
 // ── DRAG & DROP ──
-function handleDrag(e)     { e.preventDefault(); document.getElementById('drop-zone').classList.add('drag-over'); }
-function handleDragLeave() { document.getElementById('drop-zone').classList.remove('drag-over'); }
-function handleDrop(e)     { e.preventDefault(); document.getElementById('drop-zone').classList.remove('drag-over'); handleFiles(e.dataTransfer.files); }
+function handleDrag(e)     { e.preventDefault(); e.currentTarget.classList.add('drag-over'); }
+function handleDragLeave(e) { e.preventDefault(); e.currentTarget.classList.remove('drag-over'); }
+function handleDrop(e)     { e.preventDefault(); e.currentTarget.classList.remove('drag-over'); handleFiles(e.dataTransfer.files); }
 
 function handleFiles(files) {
   if(files.length > 0) {
@@ -234,7 +268,7 @@ function handleFiles(files) {
   }
 }
 
-// ── CARGAR GALERÍA EN TIEMPO REAL desde el Script Seguro ──
+// ── CARGAR GALERÍA EN TIEMPO REAL DESDE EL SCRIPT EN BASE64 ──
 async function loadGallery() {
   const grid = document.getElementById('gallery-grid');
   try {
@@ -242,14 +276,15 @@ async function loadGallery() {
     const result = await response.json();
     
     if (result.status === 'success' && result.data.length > 0) {
+      galleryFiles = result.data; 
       grid.innerHTML = '';
-      result.data.forEach(img => {
+      result.data.forEach((img, index) => {
         const item = document.createElement('div');
         item.className = 'gallery-item';
-        item.onclick = () => openLightbox(img.url);
+        item.onclick = () => openLightbox(index);
         item.innerHTML = `
-          <img src="${img.url}" alt="Recuerdo" loading="lazy" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\'><rect width=\'100\' height=\'100\' fill=\'%23222\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%23666\'>📸</text></svg>'"/>
-          <div class="overlay"><span>✨ Toca para ampliar</span></div>
+          <img src="${img.url}" alt="Recuerdo" loading="lazy"/>
+          <div class="overlay"><span>✨ Ver en pantalla completa</span></div>
         `;
         grid.appendChild(item);
       });
@@ -262,10 +297,18 @@ async function loadGallery() {
   }
 }
 
-// ── SUBIR ARCHIVO MEDIANTE BASE64 HACIA GOOGLE APPS SCRIPT ──
+// ── SUBIR ARCHIVO MEDIANTE FORM-URLENCODED EN BASE64 ──
 async function uploadFile(file) {
   const itemEl = createUploadItem(file);
   document.getElementById('upload-list').prepend(itemEl);
+  
+  const statusBar = document.getElementById('status-bar');
+  const statusText = document.getElementById('status-text');
+  const statusDot = document.getElementById('status-dot');
+  
+  statusBar.className = 'visible';
+  statusText.textContent = 'Subiendo foto...';
+  statusDot.className = 'status-dot';
 
   const reader = new FileReader();
   reader.onload = async (e) => {
@@ -281,7 +324,10 @@ async function uploadFile(file) {
 
       let pct = 0;
       const interval = setInterval(() => {
-        if(pct < 90) { pct += 15; itemEl.querySelector('.progress-bar').style.width = pct + '%'; }
+        if(pct < 90) { 
+          pct += 15; 
+          itemEl.querySelector('.progress-bar').style.width = pct + '%'; 
+        }
       }, 150);
 
       const response = await fetch(SCRIPT_URL, {
@@ -297,14 +343,29 @@ async function uploadFile(file) {
         itemEl.querySelector('.progress-bar').style.width = '100%';
         itemEl.querySelector('.status-icon').textContent = '✅';
         itemEl.querySelector('.progress-bar').style.background = '#22c55e';
+        
+        statusText.textContent = '¡Subido con éxito!';
+        statusDot.className = 'status-dot done';
+        
         showToast('¡Foto guardada! 🎉', 'success');
         confettiBurst();
-        setTimeout(() => { itemEl.remove(); loadGallery(); }, 2000);
+        
+        // Limpiamos los inputs para que permitan subir el mismo archivo si se desea volver a intentar
+        document.getElementById('file-input-camera').value = "";
+        document.getElementById('file-input-gallery').value = "";
+        
+        setTimeout(() => { 
+          itemEl.remove(); 
+          statusBar.className = '';
+          loadGallery(); 
+        }, 2000);
       } else {
         throw new Error();
       }
     } catch(err) {
       itemEl.querySelector('.status-icon').textContent = '❌';
+      statusText.textContent = 'Error al subir foto';
+      statusDot.className = 'status-dot error';
       showToast('Error al subir', 'error');
     }
   };
@@ -325,9 +386,15 @@ function createUploadItem(file) {
   return d;
 }
 
-// ── LIGHTBOX ──
-function openLightbox(url) { const lb = document.getElementById('lightbox'); document.getElementById('lightbox-img').src = url; lb.className = 'active'; }
-function closeLightbox()  { document.getElementById('lightbox').className = ''; }
+// ── LIGHTBOX (Pantalla Completa) ──
+// Ahora usa las URLs nativas en Base64 cargadas en memoria, resolviendo el bug.
+function openLightbox(index) { 
+  const lb = document.getElementById('lightbox'); 
+  document.getElementById('lightbox-img').src = galleryFiles[index].url; 
+  lb.className = 'active'; 
+}
+function closeLightbox() { document.getElementById('lightbox').className = ''; }
+document.getElementById('lightbox').addEventListener('click', e => { if (e.target === e.currentTarget) closeLightbox(); });
 
 // ── TOAST & CONFETTI ──
 let toastTimer;
@@ -336,10 +403,10 @@ function showToast(msg, type='') {
   clearTimeout(toastTimer); toastTimer = setTimeout(() => t.className = '', 3200);
 }
 function confettiBurst() {
-  const colors = ['#e92d2e','#ffd700','#fff'];
+  const colors = ['#e92d2e','#ffd700','#fff','#ff6b6b'];
   const burst  = document.createElement('div'); burst.className = 'confetti-burst';
   burst.style.cssText = `top:40%;left:50%;`;
-  for (let i = 0; i < 15; i++) {
+  for (let i = 0; i < 16; i++) {
     const dot = document.createElement('div'); dot.className = 'confetti-dot';
     dot.style.cssText = `background:${colors[i%colors.length]};left:${Math.random()*60-30}px;top:${Math.random()*-20}px;transform:rotate(${Math.random()*360}deg);animation-delay:${Math.random()*.2}s;animation-duration:${.7+Math.random()*.5}s;`;
     burst.appendChild(dot);
@@ -350,8 +417,7 @@ function confettiBurst() {
 // ── INICIALIZACIÓN ──
 window.addEventListener('DOMContentLoaded', () => {
   loadGallery();
-  // Se refresca automáticamente cada 30 segundos de fondo
-  setInterval(loadGallery, 30000);
+  setInterval(loadGallery, 30000); // Auto-refresco cada 30 segundos
 });
 
 // PARTICLES
