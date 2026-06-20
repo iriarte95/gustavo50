@@ -56,14 +56,13 @@
     .section-desc{color:var(--muted);font-size:1rem;line-height:1.6;max-width:540px;margin-bottom:2.5rem}
     .divider{position:relative;z-index:1;height:1px;background:var(--border);max-width:900px;margin:0 auto}
 
-    /* CARDS CONTENEDORAS DE SUBIDA */
-    .upload-container{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:1.5rem;}
-    .drop-zone{border:2px dashed rgba(233,45,46,.4);border-radius:var(--radius);padding:2.5rem 1.5rem;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;background:rgba(233,45,46,.03);display:flex;flex-direction:column;align-items:center;justify-content:center;}
-    .drop-zone:hover,.drop-zone.drag-over{border-color:var(--red);background:rgba(233,45,46,.07)}
-    .drop-icon{font-size:3rem;margin-bottom:0.75rem}
-    .drop-title{font-size:1.1rem;font-weight:700;margin-bottom:.4rem;line-height:1.3}
-    .drop-sub{color:var(--muted);font-size:.8rem;line-height:1.4}
-    .file-input-hidden{display:none}
+    /* DROP ZONE */
+    #drop-zone{border:2px dashed rgba(233,45,46,.4);border-radius:var(--radius);padding:3.5rem 2rem;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;background:rgba(233,45,46,.03);margin-bottom:1.5rem}
+    #drop-zone:hover,#drop-zone.drag-over{border-color:var(--red);background:rgba(233,45,46,.07)}
+    .drop-icon{font-size:3.5rem;margin-bottom:1rem}
+    .drop-title{font-size:1.15rem;font-weight:700;margin-bottom:.4rem}
+    .drop-sub{color:var(--muted);font-size:.85rem;margin-bottom:1.5rem}
+    #file-input{display:none}
 
     /* STATUS BAR */
     #status-bar{display:none;align-items:center;gap:10px;background:rgba(233,45,46,.08);border:1px solid rgba(233,45,46,.2);border-radius:12px;padding:1rem 1.25rem;margin-bottom:1.5rem;font-size:.9rem}
@@ -132,7 +131,6 @@
       .qr-inner{grid-template-columns:1fr;text-align:center;gap:1.5rem}
       #qr-container{margin:0 auto}
       .gallery-grid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}
-      .upload-container{grid-template-columns:1fr;gap:15px;}
     }
   </style>
 </head>
@@ -149,8 +147,8 @@
   </h1>
   <p class="hero-sub">Gracias por participar de mi cumpleaños. Dejá una foto que sea un recuerdo imborrable.</p>
   <div class="hero-cta">
-    <a href="#upload" class="btn-primary">📸 Compartir Foto</a>
-    <a href="#gallery" class="btn-ghost">🖼 Ver galería</a>
+    <a href="#upload" class="btn-primary">📷 Sacar / Subir Foto</a>
+    <a href="#gallery" class="btn-ghost"> Ver galería</a>
   </div>
   <div class="scroll-hint">Deslizá</div>
 </section>
@@ -169,31 +167,20 @@
 <section class="section" id="upload">
   <p class="section-label">📷 Compartir</p>
   <h2 class="section-title">Subí tu foto al álbum</h2>
-  <p class="section-desc">Elegí la opción que prefieras para enviarle tu recuerdo a Gustavo.</p>
+  <p class="section-desc">Al tocar abajo se abrirá tu cámara para capturar el momento directamente.</p>
 
   <div id="status-bar">
     <span class="status-dot" id="status-dot"></span>
     <span id="status-text">Listo para subir</span>
   </div>
 
-  <div class="upload-container">
-    
-    <div class="drop-zone" onclick="document.getElementById('file-input-camera').click()">
-      <div class="drop-icon">📸</div>
-      <div class="drop-title">Tocá aquí para abrir la cámara</div>
-      <div class="drop-sub">Saca una foto y se subirá automáticamente</div>
-    </div>
-    <input type="file" id="file-input-camera" class="file-input-hidden" accept="image/*" capture="environment" onchange="handleFiles(this.files)"/>
-
-    <div class="drop-zone" onclick="document.getElementById('file-input-gallery').click()" ondragover="handleDrag(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
-      <div class="drop-icon">🖼️</div>
-      <div class="drop-title">Tocá aquí para subir desde tu galería</div>
-      <div class="drop-sub">Subí una foto que tengas desde tu teléfono</div>
-    </div>
-    <input type="file" id="file-input-gallery" class="file-input-hidden" accept="image/*" onchange="handleFiles(this.files)"/>
-
+  <div id="drop-zone" onclick="document.getElementById('file-input').click()" ondragover="handleDrag(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
+    <div class="drop-icon">📸</div>
+    <div class="drop-title">Tocá aquí para abrir la cámara</div>
+    <div class="drop-sub">Saca una foto y se subirá automáticamente</div>
+    <button class="btn-primary" style="pointer-events:none; margin-top: 1rem;">📸 Abrir Cámara</button>
   </div>
-
+  <input type="file" id="file-input" accept="image/*" capture="environment" onchange="handleFiles(this.files)"/>
   <div id="upload-list"></div>
 </section>
 
@@ -202,10 +189,10 @@
 <section class="section" id="gallery">
   <p class="section-label">✨ Álbum Digital</p>
   <h2 class="section-title">Momentos en tiempo real</h2>
-  <p class="section-desc">Fotos compartidas por los invitados durante la fiesta.</p>
+  <p class="section-desc">Fotos compartidas por ustedes.</p>
   <button class="btn-ghost" id="load-gallery-btn" onclick="loadGallery()" style="margin-bottom:1.5rem; display: inline-flex;">🔄 Actualizar fotos</button>
   <div class="gallery-grid" id="gallery-grid">
-    <div class="empty-gallery"><div class="big">⏳</div>Cargando fotos del álbum...</div>
+    <div class="empty-gallery"><div class="big"></div>Cargando fotos del álbum...</div>
   </div>
 </section>
 
@@ -237,9 +224,8 @@
 <div id="toast"></div>
 
 <script>
-// ── CONFIGURACIÓN DEL BACKEND SEGURO ──
-// ↓↓↓ PEGA ACÁ ABAJO LA URL QUE TE DIO GOOGLE APPS SCRIPT AL IMPLEMENTAR ↓↓↓
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxHnuTnggyUCpEq82P3vmGEJgSv0WNQPOXEZy-8qxCIwrUEXI-fVZT8ran17vTYyw/exec';
+
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbynyMnuNyUnjdGZH1-lGE5DP8NGdYIlkUKzZyJkEFpMvdXJpwL314rppe23aOKimqw6/exec';
 
 let galleryFiles = [];
 
@@ -256,9 +242,9 @@ function copyURL() {
 }
 
 // ── DRAG & DROP ──
-function handleDrag(e)     { e.preventDefault(); e.currentTarget.classList.add('drag-over'); }
-function handleDragLeave(e) { e.preventDefault(); e.currentTarget.classList.remove('drag-over'); }
-function handleDrop(e)     { e.preventDefault(); e.currentTarget.classList.remove('drag-over'); handleFiles(e.dataTransfer.files); }
+function handleDrag(e)     { e.preventDefault(); document.getElementById('drop-zone').classList.add('drag-over'); }
+function handleDragLeave() { document.getElementById('drop-zone').classList.remove('drag-over'); }
+function handleDrop(e)     { e.preventDefault(); document.getElementById('drop-zone').classList.remove('drag-over'); handleFiles(e.dataTransfer.files); }
 
 function handleFiles(files) {
   if(files.length > 0) {
@@ -276,7 +262,7 @@ async function loadGallery() {
     const result = await response.json();
     
     if (result.status === 'success' && result.data.length > 0) {
-      galleryFiles = result.data; 
+      galleryFiles = result.data; // Almacenamos el array para el Lightbox
       grid.innerHTML = '';
       result.data.forEach((img, index) => {
         const item = document.createElement('div');
@@ -289,7 +275,7 @@ async function loadGallery() {
         grid.appendChild(item);
       });
     } else if (result.data && result.data.length === 0) {
-      grid.innerHTML = `<div class="empty-gallery"><div class="big">📸</div>Aún no hay fotos. ¡Sé el primero en subir una!</div>`;
+      grid.innerHTML = `<div class="empty-gallery"><div class="big">📸</div>Aún no hay fotos. ¡Sumate y convertite el primero en subir una!</div>`;
     }
   } catch (err) {
     console.error("Error al cargar galería:", err);
@@ -350,10 +336,6 @@ async function uploadFile(file) {
         showToast('¡Foto guardada! 🎉', 'success');
         confettiBurst();
         
-        // Limpiamos los inputs para que permitan subir el mismo archivo si se desea volver a intentar
-        document.getElementById('file-input-camera').value = "";
-        document.getElementById('file-input-gallery').value = "";
-        
         setTimeout(() => { 
           itemEl.remove(); 
           statusBar.className = '';
@@ -387,7 +369,6 @@ function createUploadItem(file) {
 }
 
 // ── LIGHTBOX (Pantalla Completa) ──
-// Ahora usa las URLs nativas en Base64 cargadas en memoria, resolviendo el bug.
 function openLightbox(index) { 
   const lb = document.getElementById('lightbox'); 
   document.getElementById('lightbox-img').src = galleryFiles[index].url; 
@@ -417,7 +398,8 @@ function confettiBurst() {
 // ── INICIALIZACIÓN ──
 window.addEventListener('DOMContentLoaded', () => {
   loadGallery();
-  setInterval(loadGallery, 30000); // Auto-refresco cada 30 segundos
+  // Refresco en segundo plano cada 30 segundos
+  setInterval(loadGallery, 30000);
 });
 
 // PARTICLES
