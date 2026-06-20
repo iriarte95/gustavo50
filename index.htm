@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>50 Años Gustavo 🎉</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --red:#e92d2e;--red-dark:#b81f20;--red-glow:rgba(233,45,46,.35);
+      --gold:#ffd700;--black:#0a0a0a;--card:#141414;--surface:#1c1c1c;
+      --border:rgba(255,255,255,.08);--text:#f0f0f0;--muted:#888;--radius:16px;
+    }
+    html{scroll-behavior:smooth}
+    body{font-family:'Inter',sans-serif;background:var(--black);color:var(--text);min-height:100vh;overflow-x:hidden}
+    #particles-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0}
+
+    /* HERO */
+    .hero{position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem 1.5rem;z-index:1;overflow:hidden}
+    .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(233,45,46,.18) 0%,transparent 70%),radial-gradient(ellipse 60% 40% at 80% 100%,rgba(255,215,0,.07) 0%,transparent 60%);pointer-events:none}
+    .watermark-50{position:absolute;font-size:clamp(200px,40vw,420px);font-weight:900;color:rgba(233,45,46,.06);letter-spacing:-.05em;line-height:1;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;user-select:none;white-space:nowrap}
+    .badge{display:inline-flex;align-items:center;gap:8px;background:rgba(233,45,46,.12);border:1px solid rgba(233,45,46,.3);color:var(--red);font-size:.75rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:6px 16px;border-radius:100px;margin-bottom:1.5rem}
+    .hero-title{font-size:clamp(2.8rem,10vw,7rem);font-weight:900;line-height:.95;letter-spacing:-.03em;margin-bottom:.4em}
+    .hero-title .line-red{color:var(--red);display:block}
+    .hero-title .line-white{color:#fff;display:block}
+    .hero-title .years{font-size:clamp(1rem,3vw,1.6rem);font-weight:400;color:var(--gold);letter-spacing:.25em;text-transform:uppercase;display:block;margin-top:.3em}
+    .hero-sub{font-size:clamp(1rem,2.5vw,1.25rem);color:rgba(255,255,255,.65);max-width:480px;line-height:1.6;margin-bottom:2.5rem}
+    .hero-cta{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center}
+    .scroll-hint{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;opacity:.4;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase}
+    .scroll-hint::after{content:'';width:1px;height:40px;background:linear-gradient(to bottom,rgba(255,255,255,.6),transparent);animation:scrollPulse 1.8s ease-in-out infinite}
+    @keyframes scrollPulse{0%,100%{opacity:.3}50%{opacity:1}}
+
+    /* BUTTONS */
+    .btn-primary{display:inline-flex;align-items:center;gap:8px;background:var(--red);color:#fff;font-family:'Inter',sans-serif;font-size:1rem;font-weight:700;padding:14px 28px;border-radius:100px;border:none;cursor:pointer;text-decoration:none;transition:background .2s,transform .15s,box-shadow .2s;box-shadow:0 4px 24px var(--red-glow)}
+    .btn-primary:hover{background:var(--red-dark);transform:translateY(-2px);box-shadow:0 8px 32px var(--red-glow)}
+
+    /* MESSAGES MARQUEE */
+    .messages-strip{position:relative;z-index:1;background:var(--card);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:2.5rem 0;overflow:hidden}
+    .messages-strip::before{content:'';position:absolute;left:0;top:0;bottom:0;width:80px;background:linear-gradient(to right,var(--card),transparent);z-index:2;pointer-events:none}
+    .messages-strip::after{content:'';position:absolute;right:0;top:0;bottom:0;width:80px;background:linear-gradient(to left,var(--card),transparent);z-index:2;pointer-events:none}
+    .messages-track{display:flex;gap:3rem;animation:marquee 28s linear infinite;width:max-content}
+    @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+    .msg-item{display:flex;align-items:center;gap:12px;white-space:nowrap;font-size:clamp(.9rem,2vw,1.05rem);color:rgba(255,255,255,.8)}
+    .msg-item .dot{width:6px;height:6px;background:var(--red);border-radius:50%;flex-shrink:0}
+
+    /* SECTIONS */
+    .section{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:5rem 1.5rem}
+    .section-label{font-size:.7rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--red);margin-bottom:.75rem}
+    .section-title{font-size:clamp(1.8rem,5vw,2.8rem);font-weight:800;letter-spacing:-.025em;line-height:1.1;margin-bottom:.75rem}
+    .section-desc{color:var(--muted);font-size:1rem;line-height:1.6;max-width:540px;margin-bottom:2.5rem}
+    .divider{position:relative;z-index:1;height:1px;background:var(--border);max-width:900px;margin:0 auto}
+
+    /* DROP ZONE / BOTÓN CÁMARA */
+    #drop-zone{border:2px dashed rgba(233,45,46,.4);border-radius:var(--radius);padding:3.5rem 2rem;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;background:rgba(233,45,46,.03);margin-bottom:1.5rem}
+    #drop-zone:hover,#drop-zone.drag-over{border-color:var(--red);background:rgba(233,45,46,.07)}
+    .drop-icon{font-size:3.5rem;margin-bottom:1rem}
+    .drop-title{font-size:1.15rem;font-weight:700;margin-bottom:.4rem}
+    .drop-sub{color:var(--muted);font-size:.85rem;margin-bottom:1.5rem}
+    #file-input{display:none}
+
+    /* UPLOAD LIST */
+    #upload-list{display:flex;flex-direction:column;gap:.75rem;margin-bottom:1.5rem}
+    .upload-item{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1rem 1.25rem;display:flex;align-items:center;gap:12px}
+    .upload-item .file-thumb{width:44px;height:44px;border-radius:8px;object-fit:cover;flex-shrink:0;background:var(--card)}
+    .upload-item .file-info{flex:1;min-width:0}
+    .upload-item .file-name{font-size:.85rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .upload-item .file-size{font-size:.75rem;color:var(--muted)}
+    .upload-item .progress-wrap{margin-top:6px;background:rgba(255,255,255,.08);border-radius:100px;height:4px;overflow:hidden}
+    .upload-item .progress-bar{height:100%;background:var(--red);border-radius:100px;transition:width .3s}
+    .upload-item .status-icon{font-size:1.2rem;flex-shrink:0}
+
+    /* GALLERY */
+    .gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
+    .gallery-item{position:relative;aspect-ratio:1;border-radius:12px;overflow:hidden;background:var(--surface);cursor:pointer}
+    .gallery-item img{width:100%;height:100%;object-fit:cover;transition:transform .3s}
+    .gallery-item:hover img{transform:scale(1.06)}
+    .gallery-item .overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.6),transparent);opacity:0;transition:opacity .25s;display:flex;align-items:flex-end;padding:10px}
+    .gallery-item:hover .overlay{opacity:1}
+    .gallery-item .overlay span{font-size:.75rem;color:rgba(255,255,255,.8);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .empty-gallery{text-align:center;padding:3rem 1rem;color:var(--muted);font-size:.9rem;grid-column:1/-1}
+    .empty-gallery .big{font-size:3rem;margin-bottom:.5rem}
+
+    /* QR SECTION */
+    .qr-section{position:relative;z-index:1;background:var(--card);border-top:1px solid var(--border);padding:4rem 1.5rem}
+    .qr-inner{max-width:700px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;gap:3rem;align-items:center}
+    #qr-container{background:#fff;border-radius:16px;padding:16px;flex-shrink:0}
+    .qr-text .qr-label{font-size:.7rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--red);margin-bottom:.5rem}
+    .qr-text h3{font-size:1.5rem;font-weight:800;margin-bottom:.5rem}
+    .qr-text p{color:var(--muted);font-size:.9rem;line-height:1.6;margin-bottom:1.25rem}
+    .qr-url{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:.8rem;color:var(--muted);word-break:break-all}
+    .copy-btn{background:var(--red);border:none;color:#fff;font-family:'Inter',sans-serif;font-size:.8rem;font-weight:600;padding:6px 14px;border-radius:6px;cursor:pointer;white-space:nowrap;transition:background .2s;flex-shrink:0}
+    .copy-btn:hover{background:var(--red-dark)}
+
+    /* FOOTER */
+    footer{position:relative;z-index:1;text-align:center;padding:2rem 1rem;font-size:.8rem;color:var(--muted);border-top:1px solid var(--border)}
+    footer strong{color:var(--red)}
+
+    /* LIGHTBOX */
+    #lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:1000;align-items:center;justify-content:center;padding:1rem}
+    #lightbox.active{display:flex}
+    #lightbox img{max-width:90vw;max-height:90vh;border-radius:12px;object-fit:contain}
+    #lightbox .close-lb{position:absolute;top:1.5rem;right:1.5rem;font-size:2rem;cursor:pointer;color:rgba(255,255,255,.6);transition:color .2s;background:none;border:none}
+    #lightbox .close-lb:hover{color:#fff}
+
+    /* TOAST */
+    #toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(100px);background:var(--surface);border:1px solid var(--border);color:#fff;padding:12px 20px;border-radius:100px;font-size:.9rem;font-weight:500;z-index:2000;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;pointer-events:none}
+    #toast.show{transform:translateX(-50%) translateY(0)}
+    #toast.success{border-color:#22c55e}
+    #toast.error{border-color:var(--red)}
+
+    /* CONFETTI */
+    .confetti-burst{position:fixed;pointer-events:none;z-index:999}
+    .confetti-dot{position:absolute;width:8px;height:8px;border-radius:2px;animation:confettiFall 1.2s ease-out forwards}
+    @keyframes confettiFall{0%{transform:translateY(0) rotate(0deg);opacity:1}100%{transform:translateY(120px) rotate(360deg);opacity:0}}
+
+    @media(max-width:640px){
+      .qr-inner{grid-template-columns:1fr;text-align:center;gap:1.5rem}
+      #qr-container{margin:0 auto}
+      .gallery-grid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}
+    }
+  </style>
+</head>
+<body>
+<canvas id="particles-canvas"></canvas>
+
+<section class="hero">
+  <div class="watermark-50">50</div>
+  <div class="badge">Un cumpleaños redondo</div>
+  <h1 class="hero-title">
+    <span class="line-red">50 Años</span>
+    <span class="line-white">Gustavo</span>
+    <span class="years"> Medio siglo de historia </span>
+  </h1>
+  <p class="hero-sub">Gracias por participar de mi cumpleaños. Dejá una foto que sea un recuerdo imborrable.</p>
+  <div class="hero-cta">
+    <a href="#upload" class="btn-primary">📸 Sacar / Subir Foto</a>
+  </div>
+  <div class="scroll-hint">Deslizá</div>
+</section>
+
+<div class="messages-strip">
+  <div class="messages-track">
+    <div class="msg-item"><span class="dot"></span>Gracias por participar de mi cumpleaños 🙏</div>
+    <div class="msg-item"><span class="dot"></span>Dejá una foto que sea un recuerdo imborrable 📸</div>
+    <div class="msg-item"><span class="dot"></span>Tu aporte hace que este momento sea único ✨</div>
+    <div class="msg-item"><span class="dot"></span>50 años de momentos que valen la pena recordar 🥂</div>
+    <div class="msg-item"><span class="dot"></span>Cada foto es un abrazo que se queda para siempre 💛</div>
+  </div>
+</div>
+
+<section class="section" id="upload">
+  <p class="section-label">📷 Compartir</p>
+  <h2 class="section-title">Subí tu foto al álbum</h2>
+  <p class="section-desc">Al tocar abajo se abrirá tu cámara para capturar el momento directamente.</p>
+
+  <div id="drop-zone" onclick="document.getElementById('file-input').click()" ondragover="handleDrag(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
+    <div class="drop-icon">📸</div>
+    <div class="drop-title">Tocá aquí para abrir la cámara</div>
+    <div class="drop-sub">Saca una foto y se subirá automáticamente</div>
+  </div>
+  <input type="file" id="file-input" accept="image/*" capture="environment" onchange="handleFiles(this.files)"/>
+  <div id="upload-list"></div>
+</section>
+
+<div class="divider"></div>
+
+<section class="section" id="gallery-section">
+  <p class="section-label">✨ Álbum Digital</p>
+  <h2 class="section-title">Momentos en tiempo real</h2>
+  <p class="section-desc">Fotos compartidas por los invitados durante la fiesta.</p>
+  <div class="gallery-grid" id="gallery-grid">
+    <div class="empty-gallery"><div class="big">⏳</div>Cargando fotos del álbum...</div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section class="qr-section" id="qr">
+  <div class="qr-inner">
+    <div id="qr-container"></div>
+    <div class="qr-text">
+      <p class="qr-label">📲 Compartí con invitados</p>
+      <h3>Escaneá el QR</h3>
+      <p>Mostrá este código en la fiesta para que todos puedan subir sus fotos desde el celular.</p>
+      <div class="qr-url">
+        <span id="page-url" style="flex:1">—</span>
+        <button class="copy-btn" onclick="copyURL()">Copiar</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Hecho con amor para celebrar los <strong>50 años del Queque</strong> · 2026
+</footer>
+
+<div id="lightbox">
+  <button class="close-lb" onclick="closeLightbox()">✕</button>
+  <img id="lightbox-img" src="" alt=""/>
+</div>
+<div id="toast"></div>
+
+<script>
+// ── CONFIGURACIÓN DEL BACKEND SEGURO ──
+// ↓↓↓ PEGA ACÁ ABAJO LA URL QUE TE DIO GOOGLE APPS SCRIPT AL IMPLEMENTAR ↓↓↓
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbynyMnuNyUnjdGZH1-lGE5DP8NGdYIlkUKzZyJkEFpMvdXJpwL314rppe23aOKimqw6/exec';
+
+// ── QR + URL ──
+const PAGE_URL = window.location.href.split('?')[0];
+document.getElementById('page-url').textContent = PAGE_URL;
+new QRCode(document.getElementById('qr-container'), {
+  text: PAGE_URL, width: 160, height: 160,
+  colorDark: '#0a0a0a', colorLight: '#ffffff',
+  correctLevel: QRCode.CorrectLevel.M
+});
+function copyURL() {
+  navigator.clipboard.writeText(PAGE_URL).then(() => showToast('🔗 Enlace copiado', 'success'));
+}
+
+// ── DRAG & DROP ──
+function handleDrag(e)     { e.preventDefault(); document.getElementById('drop-zone').classList.add('drag-over'); }
+function handleDragLeave() { document.getElementById('drop-zone').classList.remove('drag-over'); }
+function handleDrop(e)     { e.preventDefault(); document.getElementById('drop-zone').classList.remove('drag-over'); handleFiles(e.dataTransfer.files); }
+
+function handleFiles(files) {
+  if(files.length > 0) {
+    const f = files[0];
+    if (!f.type.startsWith('image/')) { showToast(`${f.name} no es una imagen`, 'error'); return; }
+    uploadFile(f);
+  }
+}
+
+// ── CARGAR GALERÍA EN TIEMPO REAL desde el Script Seguro ──
+async function loadGallery() {
+  const grid = document.getElementById('gallery-grid');
+  try {
+    const response = await fetch(SCRIPT_URL);
+    const result = await response.json();
+    
+    if (result.status === 'success' && result.data.length > 0) {
+      grid.innerHTML = '';
+      result.data.forEach(img => {
+        const item = document.createElement('div');
+        item.className = 'gallery-item';
+        item.onclick = () => openLightbox(img.url);
+        item.innerHTML = `
+          <img src="${img.url}" alt="Recuerdo" loading="lazy" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\'><rect width=\'100\' height=\'100\' fill=\'%23222\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%23666\'>📸</text></svg>'"/>
+          <div class="overlay"><span>✨ Toca para ampliar</span></div>
+        `;
+        grid.appendChild(item);
+      });
+    } else if (result.data && result.data.length === 0) {
+      grid.innerHTML = `<div class="empty-gallery"><div class="big">📸</div>Aún no hay fotos. ¡Sé el primero en subir una!</div>`;
+    }
+  } catch (err) {
+    console.error("Error al cargar galería:", err);
+    grid.innerHTML = `<div class="empty-gallery"><div class="big">⚠️</div>No se pudo cargar el álbum en vivo.</div>`;
+  }
+}
+
+// ── SUBIR ARCHIVO MEDIANTE BASE64 HACIA GOOGLE APPS SCRIPT ──
+async function uploadFile(file) {
+  const itemEl = createUploadItem(file);
+  document.getElementById('upload-list').prepend(itemEl);
+
+  const reader = new FileReader();
+  reader.onload = async (e) => {
+    itemEl.querySelector('.file-thumb').src = e.target.result;
+    
+    try {
+      const base64Data = e.target.result.split(',')[1];
+      const props = new URLSearchParams({
+        fileData: base64Data,
+        fileName: file.name,
+        mimeType: file.type
+      });
+
+      let pct = 0;
+      const interval = setInterval(() => {
+        if(pct < 90) { pct += 15; itemEl.querySelector('.progress-bar').style.width = pct + '%'; }
+      }, 150);
+
+      const response = await fetch(SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: props.toString()
+      });
+
+      clearInterval(interval);
+      const data = await response.json();
+
+      if (data.status === 'success') {
+        itemEl.querySelector('.progress-bar').style.width = '100%';
+        itemEl.querySelector('.status-icon').textContent = '✅';
+        itemEl.querySelector('.progress-bar').style.background = '#22c55e';
+        showToast('¡Foto guardada! 🎉', 'success');
+        confettiBurst();
+        setTimeout(() => { itemEl.remove(); loadGallery(); }, 2000);
+      } else {
+        throw new Error();
+      }
+    } catch(err) {
+      itemEl.querySelector('.status-icon').textContent = '❌';
+      showToast('Error al subir', 'error');
+    }
+  };
+  reader.readAsDataURL(file);
+}
+
+function createUploadItem(file) {
+  const d = document.createElement('div');
+  d.className = 'upload-item';
+  d.innerHTML = `
+    <img class="file-thumb" src="" alt=""/>
+    <div class="file-info">
+      <div class="file-name">${file.name}</div>
+      <div class="file-size">${(file.size/1024/1024).toFixed(2)} MB</div>
+      <div class="progress-wrap"><div class="progress-bar" style="width:0%"></div></div>
+    </div>
+    <span class="status-icon">⏳</span>`;
+  return d;
+}
+
+// ── LIGHTBOX ──
+function openLightbox(url) { const lb = document.getElementById('lightbox'); document.getElementById('lightbox-img').src = url; lb.className = 'active'; }
+function closeLightbox()  { document.getElementById('lightbox').className = ''; }
+
+// ── TOAST & CONFETTI ──
+let toastTimer;
+function showToast(msg, type='') {
+  const t = document.getElementById('toast'); t.textContent = msg; t.className = 'show ' + type;
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => t.className = '', 3200);
+}
+function confettiBurst() {
+  const colors = ['#e92d2e','#ffd700','#fff'];
+  const burst  = document.createElement('div'); burst.className = 'confetti-burst';
+  burst.style.cssText = `top:40%;left:50%;`;
+  for (let i = 0; i < 15; i++) {
+    const dot = document.createElement('div'); dot.className = 'confetti-dot';
+    dot.style.cssText = `background:${colors[i%colors.length]};left:${Math.random()*60-30}px;top:${Math.random()*-20}px;transform:rotate(${Math.random()*360}deg);animation-delay:${Math.random()*.2}s;animation-duration:${.7+Math.random()*.5}s;`;
+    burst.appendChild(dot);
+  }
+  document.body.appendChild(burst); setTimeout(() => burst.remove(), 1500);
+}
+
+// ── INICIALIZACIÓN ──
+window.addEventListener('DOMContentLoaded', () => {
+  loadGallery();
+  // Se refresca automáticamente cada 30 segundos de fondo
+  setInterval(loadGallery, 30000);
+});
+
+// PARTICLES
+(function(){
+  const canvas = document.getElementById('particles-canvas'); const ctx = canvas.getContext('2d'); let W, H, particles;
+  function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+  function create() {
+    particles = []; const n = Math.floor(W*H/14000);
+    for (let i=0;i<n;i++) {
+      const g = Math.random() < .25;
+      particles.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.5+.4,dx:(Math.random()-.5)*.2,dy:-Math.random()*.3-.05,a:Math.random()*.4+.15,c:g?'rgba(255,215,0,':'rgba(233,45,46,'});
+    }
+  }
+  function draw() {
+    ctx.clearRect(0,0,W,H);
+    particles.forEach(p => {
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fillStyle=p.c+p.a+')'; ctx.fill();
+      p.x+=p.dx; p.y+=p.dy; if(p.y<-5){p.y=H+5; p.x=Math.random()*W}
+    });
+    requestAnimationFrame(draw);
+  }
+  window.addEventListener('resize',()=>{resize();create();}); resize();create();draw();
+})();
+</script>
+</body>
+</html>
