@@ -181,7 +181,7 @@
     <span class="line-white">Gustavo</span>
     <span class="years"> Medio siglo de historia </span>
   </h1>
-  <p class="hero-sub">Gracias por participar de mi cumpleaños. Dejá una foto que sea un recuerdo imborrable.</p>
+  <p class="hero-sub">Gracias por acompañarme en este día tan especial, dejame tu recuerdo.</p>
   <div class="hero-cta">
     <a href="#upload" class="btn-primary">Compartir Foto</a>
     <a href="#gallery-section" class="btn-ghost">Ver presentación</a>
@@ -202,7 +202,7 @@
 <section class="section" id="upload">
   <p class="section-label">Compartir</p>
   <h2 class="section-title">Subí tu foto al álbum</h2>
-  <p class="section-desc">Elegí la opción que prefieras para enviarle tu recuerdo a Gustavo.</p>
+  <p class="section-desc">¡Elegí la opción que más te guste! En vivo o desde galería.</p>
 
   <div id="status-bar">
     <span class="status-dot" id="status-dot"></span>
@@ -211,14 +211,14 @@
 
   <div class="upload-container">
     <div class="drop-zone" onclick="document.getElementById('file-input-camera').click()">
-      <div class="drop-title">Tocá aquí para abrir la cámara</div>
+      <div class="drop-title">Presioná para abrir la cámara</div>
       <div class="drop-sub">Saca una foto y se subirá automáticamente</div>
     </div>
     <input type="file" id="file-input-camera" class="file-input-hidden" accept="image/*" capture="environment" onchange="handleFiles(this.files)"/>
 
     <div class="drop-zone" onclick="document.getElementById('file-input-gallery').click()">
-      <div class="drop-title">Tocá aquí para subir desde tu galería</div>
-      <div class="drop-sub">Subí una foto que tengas guardada en tu teléfono</div>
+      <div class="drop-title">Presioná para visualizar y subir desde tu galería</div>
+      <div class="drop-sub">Subí una foto que tengas guardada o si queres verte con tu outfit en pantalla grande 👀</div>
     </div>
     <input type="file" id="file-input-gallery" class="file-input-hidden" accept="image/*" onchange="handleFiles(this.files)"/>
   </div>
@@ -231,7 +231,7 @@
 <section class="section" id="gallery-section">
   <p class="section-label">En vivo</p>
   <h2 class="section-title">Álbum digital</h2>
-  <p class="section-desc">Transmisión automática de fotos enviadas por los invitados.</p>
+  <p class="section-desc">Transmisión automática de fotos enviadas por ustedes.💛</p>
   
   <div class="proyeccion-container">
     <div class="carousel-track" id="carousel-track"></div>
@@ -250,7 +250,7 @@
     <div class="qr-text">
       <p class="qr-label">Compartí con invitados</p>
       <h3>Escaneá el código QR</h3>
-      <p>Mostrá este código en las pantallas de la fiesta para que todos puedan ingresar y enviar sus fotos.</p>
+      <p>Con este código podes enviar tus fotos.</p>
       <div class="qr-url">
         <span id="page-url" style="flex:1">—</span>
         <button class="copy-btn" onclick="copyURL()">Copiar</button>
@@ -260,14 +260,14 @@
 </section>
 
 <footer>
-  50 años Gustavo Medaura · 2026
+  🎉 50 años Gustavo Medaura · 2026 🎉
 </footer>
 
 <div id="toast"></div>
 
 <script>
 // ── CONFIGURACIÓN DEL BACKEND SEGURO (TU WEB APP DE GOOGLE) ──
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxcmJl54uscuhzqEDFOETTM1FN8hBmUliArQUdmhjw5IR5tvXsy2aOTqCxK9DtKGt7d/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby7Y6aegeuwUHDQq7TzwCcAyeQO7EgQWUUiuvMQBnc9zujzAl39Jbc-fVML1Mst9Sbb/exec'
 
 let localPhotos  = []; 
 let carouselIndex = 0;
